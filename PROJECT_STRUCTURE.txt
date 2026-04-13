@@ -1,0 +1,97 @@
+SafetyEye - CLEAN PROJECT STRUCTURE
+====================================
+
+SafetyEye/
+├── app.py                          ⭐ MAIN - Run this!
+├── config.py                       ⚙️  Configuration management
+├── requirements.txt                📦 Dependencies
+├── .env.example                    🔑 Config template (copy to .env)
+├── .gitignore                      🚫 Git ignore rules
+├── README.md                       📖 Documentation
+│
+├── safetyeye/                      📦 Core package
+│   ├── __init__.py
+│   ├── logger.py                   📝 Logging system
+│   ├── detector.py                 🎯 YOLO detection
+│   ├── alerts.py                   📧 Email alerts
+│   ├── database.py                 💾 CSV logging
+│   ├── data/                       💿 Runtime data
+│   │   └── violations.csv          (Created on first run)
+│   └── logs/                       📋 Application logs
+│       └── app_YYYYMMDD.log        (Daily logs)
+│
+├── models/                         🎯 YOLO model weights
+│   └── (Place best.pt here)
+│
+├── data/
+│   └── datasets/                   📊 Training datasets
+│       ├── train/
+│       ├── val/
+│       └── test/
+│
+├── tests/                          🧪 Unit tests
+│
+└── .git/                           📇 Version control
+
+WHAT IS EACH FILE?
+==================
+
+app.py
+  └─ Main Streamlit dashboard
+     • Live camera feed with detection
+     • Real-time metrics
+     • Violation logs
+     • Email alerts
+     • Analytics charts
+
+config.py
+  └─ Centralized configuration
+     • Loads .env variables
+     • Sets default values
+     • Creates required directories
+
+safetyeye/logger.py
+  └─ Application logging
+     • File and console output
+     • Daily log rotation
+     • Configurable levels
+
+safetyeye/detector.py
+  └─ YOLO detection engine
+     • Model loading
+     • Frame detection
+     • Violation identification
+     • Box drawing
+
+safetyeye/alerts.py
+  └─ Email alert system
+     • Gmail SMTP
+     • Cooldown mechanism
+     • Error handling
+
+safetyeye/database.py
+  └─ Violation logging
+     • CSV management
+     • Data queries
+     • Statistics
+
+TOTAL FILES: 11 (Clean & Minimal!)
+TOTAL SIZE: ~50KB (Very lightweight!)
+
+KEY POINTS
+===========
+✅ NO mess or clutter
+✅ NO duplicate files
+✅ NO legacy code
+✅ NO unnecessary directories
+✅ Only essential files
+✅ Professional structure
+✅ Easy to maintain
+✅ Easy to extend
+
+START HERE
+==========
+1. Read README.md
+2. Edit .env.example → .env
+3. Run: streamlit run app.py
+4. Done!
