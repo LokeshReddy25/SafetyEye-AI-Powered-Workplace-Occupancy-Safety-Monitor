@@ -35,7 +35,8 @@ if not weights:
     st.sidebar.error("No weights in weights/. Train a model first (python -m src.train …).")
 qp = st.query_params
 default_w = next((i for i, w in enumerate(weights) if Path(w).stem == qp.get("weights", "best")), 0)
-weights_sel = st.sidebar.selectbox("Model weights", weights, index=default_w if weights else None)
+weights_sel = st.sidebar.selectbox("Model weights", weights, index=default_w if weights else None,
+                                   format_func=lambda p: Path(p).name)
 videos = sorted(str(p) for p in config.SOURCE_VIDEOS.glob("*.mp4")) if config.SOURCE_VIDEOS.exists() else []
 src_kind = st.sidebar.radio("Input", ["Video file", "Webcam"], horizontal=True)
 if src_kind == "Video file":
@@ -83,7 +84,7 @@ with tab_live:
             fps = 1 / max(now - t_prev, 1e-6) if fps is None else 0.9 * fps + 0.1 / max(now - t_prev, 1e-6)
             t_prev = now
             n += 1
-            frame_ph.image(cv2.cvtColor(out.annotated, cv2.COLOR_BGR2RGB), channels="RGB", use_container_width=True)
+            frame_ph.image(cv2.cvtColor(out.annotated, cv2.COLOR_BGR2RGB), channels="RGB", width="stretch")
             r = out.result
             fps_ph.metric("Dashboard FPS", f"{fps:.1f}")
             workers_ph.metric("Workers in frame", r.n_workers)
@@ -116,13 +117,13 @@ with tab_stats:
         per_min = per_min[per_min.n_workers > 0]
         per_min["compliance_%"] = per_min.n_compliant / per_min.n_workers * 100
         st.plotly_chart(px.line(per_min.reset_index(), x="ts", y="compliance_%", markers=True,
-                                title="Compliance % per minute", range_y=[0, 100]), use_container_width=True)
+                                title="Compliance % per minute", range_y=[0, 100]), width="stretch")
         if not viol.empty:
             viol["ts"] = pd.to_datetime(viol["ts"])
             vm = viol.groupby([pd.Grouper(key="ts", freq="1min"), "rule"]).size().reset_index(name="count")
             st.plotly_chart(px.bar(vm, x="ts", y="count", color="rule", title="Violations over time (per minute)"),
-                            use_container_width=True)
-            st.plotly_chart(px.pie(viol, names="rule", title="Violations by rule"), use_container_width=True)
+                            width="stretch")
+            st.plotly_chart(px.pie(viol, names="rule", title="Violations by rule"), width="stretch")
 
 # ---------------- log ----------------
 with tab_log:
@@ -134,7 +135,7 @@ with tab_log:
     df = db.query(start=d_from.isoformat(), end=(d_to + dt.timedelta(days=1)).isoformat(),
                   rule=None if rule_f == "All" else rule_f)
     st.caption(f"{len(df)} violations · stored in {config.VIOLATIONS_DB.relative_to(config.ROOT)}")
-    st.dataframe(df.sort_values("ts", ascending=False), use_container_width=True, hide_index=True)
+    st.dataframe(df.sort_values("ts", ascending=False), width="stretch", hide_index=True)
     st.download_button("⬇ Export CSV", df.to_csv(index=False), "violations.csv", "text/csv", disabled=df.empty)
     if not df.empty:
         vid = st.selectbox("Show snapshot for violation id", df.id.sort_values(ascending=False))

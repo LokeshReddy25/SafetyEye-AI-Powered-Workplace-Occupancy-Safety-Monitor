@@ -1,0 +1,45 @@
+# command: C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\.venv\Scripts\python.exe -m pytest -v tests
+# cwd: SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor
+# git: 928c959
+# started: 2026-11-27T13:43:30.979208
+
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor
+plugins: anyio-4.16.0
+collecting ... collected 29 items
+
+tests/test_alerts.py::test_violation_logged_with_snapshot_and_cooldown PASSED [  3%]
+tests/test_alerts.py::test_query_filters PASSED                          [  6%]
+tests/test_alerts.py::test_email_failure_does_not_raise PASSED           [ 10%]
+tests/test_alerts.py::test_email_not_sent_when_disabled PASSED           [ 13%]
+tests/test_alerts.py::test_send_email_uses_smtp_and_attaches_snapshot PASSED [ 17%]
+tests/test_alerts.py::test_send_email_starttls_on_587 PASSED             [ 20%]
+tests/test_data_prep.py::test_valid_label PASSED                         [ 24%]
+tests/test_data_prep.py::test_empty_label_is_background_not_error PASSED [ 27%]
+tests/test_data_prep.py::test_invalid_labels[0 0.5 0.5 0.2-expected 5 fields] PASSED [ 31%]
+tests/test_data_prep.py::test_invalid_labels[10 0.5 0.5 0.2 0.2-out of range] PASSED [ 34%]
+tests/test_data_prep.py::test_invalid_labels[-1 0.5 0.5 0.2 0.2-out of range] PASSED [ 37%]
+tests/test_data_prep.py::test_invalid_labels[0 1.5 0.5 0.2 0.2-outside [0,1]] PASSED [ 41%]
+tests/test_data_prep.py::test_invalid_labels[0 0.5 0.5 0 0.2-zero/negative] PASSED [ 44%]
+tests/test_data_prep.py::test_invalid_labels[a 0.5 0.5 0.2 0.2-non-numeric] PASSED [ 48%]
+tests/test_data_prep.py::test_duplicate_box_flagged PASSED               [ 51%]
+tests/test_data_prep.py::test_source_stem PASSED                         [ 55%]
+tests/test_data_prep.py::test_validate_split_handles_corrupt_and_missing PASSED [ 58%]
+tests/test_data_prep.py::test_real_dataset_split_sizes PASSED            [ 62%]
+tests/test_rules.py::test_compliant_person PASSED                        [ 65%]
+tests/test_rules.py::test_missing_helmet_is_violation_and_attached_to_person PASSED [ 68%]
+tests/test_rules.py::test_two_violations_same_person_count_once PASSED   [ 72%]
+tests/test_rules.py::test_violation_without_person_box_counts_as_worker PASSED [ 75%]
+tests/test_rules.py::test_mixed_scene_compliance PASSED                  [ 79%]
+tests/test_rules.py::test_low_confidence_ignored PASSED                  [ 82%]
+tests/test_rules.py::test_mask_rule_off_by_default_and_configurable PASSED [ 86%]
+tests/test_rules.py::test_unknown_rule_rejected PASSED                   [ 89%]
+tests/test_rules.py::test_empty_frame PASSED                             [ 93%]
+tests/test_rules.py::test_intersection_over_a PASSED                     [ 96%]
+tests/test_rules.py::test_cooldown PASSED                                [100%]
+
+============================= 29 passed in 0.93s ==============================
+
+# finished: 2026-11-27T13:43:32.528528  elapsed_s: 1.5  exit_code: 0
