@@ -1,0 +1,90 @@
+# command: C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\.venv\Scripts\python.exe scripts/benchmark_latency.py --weights weights/C_v8s_default_aug.pt --video C:/Users/acer/Desktop/DataSet/source_files/source_files/hardhat.mp4 --device 0 --frames 500 --warmup 20 --out results/benchmark_C_v8s_default_aug_gpu.json
+# cwd: SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor
+# git: 59d3c72
+# started: 2026-11-27T13:39:07.958103
+
+2026-11-27 13:39:17,989 WARNING VIOLATION Missing safety vest (class=NO-Safety Vest conf=0.68) source=hardhat.mp4 snapshot=2026-11-27T13-39-17.984_NO-Safety_Vest.jpg
+2026-11-27 13:39:18,998 WARNING VIOLATION Missing hardhat (class=NO-Hardhat conf=0.51) source=hardhat.mp4 snapshot=2026-11-27T13-39-18.985_NO-Hardhat.jpg
+hardware: {"device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "cpu": "12th Gen Intel(R) Core(TM) i5-12500H", "torch": "2.6.0+cu124", "python": "3.11.9"}
+video: {"file": "hardhat.mp4", "width": 640, "height": 360, "fps": 29.97, "frames_in_file": 1826}
+{
+  "hardware": {
+    "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+    "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+    "torch": "2.6.0+cu124",
+    "python": "3.11.9"
+  },
+  "video": {
+    "file": "hardhat.mp4",
+    "width": 640,
+    "height": 360,
+    "fps": 29.97,
+    "frames_in_file": 1826
+  },
+  "weights": "C_v8s_default_aug.pt",
+  "conf": 0.5,
+  "warmup_frames": 20,
+  "measured_frames": 500,
+  "wall_time_s": 5.2,
+  "throughput_fps": 96.13,
+  "latency_ms": {
+    "read": {
+      "mean": 0.31,
+      "median": 0.29,
+      "p95": 0.43,
+      "max": 1.94
+    },
+    "model_total": {
+      "mean": 9.65,
+      "median": 9.7,
+      "p95": 11.71,
+      "max": 15.83
+    },
+    "yolo_pre": {
+      "mean": 0.47,
+      "median": 0.44,
+      "p95": 0.63,
+      "max": 1.16
+    },
+    "yolo_infer": {
+      "mean": 7.61,
+      "median": 7.7,
+      "p95": 9.13,
+      "max": 11.09
+    },
+    "yolo_post": {
+      "mean": 1.11,
+      "median": 1.06,
+      "p95": 2.14,
+      "max": 9.05
+    },
+    "rules": {
+      "mean": 0.01,
+      "median": 0.01,
+      "p95": 0.01,
+      "max": 0.02
+    },
+    "draw": {
+      "mean": 0.26,
+      "median": 0.25,
+      "p95": 0.39,
+      "max": 5.47
+    },
+    "alerts": {
+      "mean": 0.16,
+      "median": 0.01,
+      "p95": 0.01,
+      "max": 24.7
+    },
+    "end_to_end": {
+      "mean": 10.4,
+      "median": 10.34,
+      "p95": 12.92,
+      "max": 34.36
+    }
+  },
+  "frames_with_violation": 258,
+  "alerts_logged_after_cooldown": 2
+}
+
+# finished: 2026-11-27T13:39:23.018844  elapsed_s: 15.1  exit_code: 0
