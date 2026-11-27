@@ -1,0 +1,11 @@
+# command: C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\.venv\Scripts\python.exe -m src.detect --weights weights/best.pt --source C:/Users/acer/Desktop/DataSet/source_files/source_files/hardhat.mp4 --no-show --device 0 --save C:/Users/acer/AppData/Local/Temp/hardhat_annotated.mp4
+# cwd: SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor
+# git: 928c959
+# started: 2026-11-27T13:40:44.116345
+
+2026-11-27 13:40:51,149 WARNING VIOLATION Missing safety vest (class=NO-Safety Vest conf=0.68) source=hardhat.mp4 snapshot=2026-11-27T13-40-51.144_NO-Safety_Vest.jpg
+2026-11-27 13:40:52,306 WARNING VIOLATION Missing hardhat (class=NO-Hardhat conf=0.51) source=hardhat.mp4 snapshot=2026-11-27T13-40-52.297_NO-Hardhat.jpg
+2026-11-27 13:41:01,270 WARNING VIOLATION Missing safety vest (class=NO-Safety Vest conf=0.51) source=hardhat.mp4 snapshot=2026-11-27T13-41-01.263_NO-Safety_Vest.jpg
+Processed 1826 frames, 3 violation alerts logged to C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\violations\violations.db
+
+# finished: 2026-11-27T13:41:13.151224  elapsed_s: 29.0  exit_code: 0

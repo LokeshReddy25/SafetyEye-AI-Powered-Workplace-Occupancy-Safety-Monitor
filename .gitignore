@@ -1,45 +1,49 @@
 # Virtual environments
 venv/
+.venv/
 env/
-.venv
-ENV/
 
 # Python
 __pycache__/
 *.py[cod]
 *.egg-info/
-*.egg
 .pytest_cache/
 
-# IDEs
+# IDE / OS
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
 .DS_Store
+Thumbs.db
 
-# Environment
+# Secrets
 .env
 .env.local
 
-# Data
-*.csv
-*.log
-safetyeye/logs/*
-safetyeye/data/*
+# Datasets, generated split lists, machine-specific data.yaml
+data/
+datasets/
+configs/data.yaml
 
-# Models
+# Model weights (never commit)
 *.pt
-models/*.pt
+*.pth
+*.onnx
+*.engine
+weights/
 
-# Streamlit
-.streamlit/
+# Videos
+*.mp4
+*.avi
+*.mov
+*.mkv
 
-# OS
-Thumbs.db
-.DS_Store
-
-# Large datasets
-data/datasets/*
+# Training run dirs (curves/CSVs are copied into results/ explicitly)
 runs/
+
+# Runtime outputs
+logs/
+violations/
+*.db
+*.sqlite
+*.log
+.streamlit/

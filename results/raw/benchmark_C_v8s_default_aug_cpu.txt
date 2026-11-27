@@ -1,0 +1,94 @@
+# command: C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\.venv\Scripts\python.exe scripts/benchmark_latency.py --weights weights/C_v8s_default_aug.pt --video C:/Users/acer/Desktop/DataSet/source_files/source_files/hardhat.mp4 --device cpu --frames 500 --warmup 20 --out results/benchmark_C_v8s_default_aug_cpu.json
+# cwd: SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor
+# git: 59d3c72
+# started: 2026-11-27T13:39:35.580244
+
+2026-11-27 13:39:53,408 WARNING VIOLATION Missing safety vest (class=NO-Safety Vest conf=0.68) source=hardhat.mp4 snapshot=2026-11-27T13-39-53.399_NO-Safety_Vest.jpg
+2026-11-27 13:40:01,862 WARNING VIOLATION Missing hardhat (class=NO-Hardhat conf=0.51) source=hardhat.mp4 snapshot=2026-11-27T13-40-01.851_NO-Hardhat.jpg
+2026-11-27 13:40:03,458 WARNING VIOLATION Missing safety vest (class=NO-Safety Vest conf=0.86) source=hardhat.mp4 snapshot=2026-11-27T13-40-03.449_NO-Safety_Vest.jpg
+2026-11-27 13:40:15,361 WARNING VIOLATION Missing safety vest (class=NO-Safety Vest conf=0.85) source=hardhat.mp4 snapshot=2026-11-27T13-40-15.348_NO-Safety_Vest.jpg
+2026-11-27 13:40:25,773 WARNING VIOLATION Missing hardhat (class=NO-Hardhat conf=0.58) source=hardhat.mp4 snapshot=2026-11-27T13-40-25.762_NO-Hardhat.jpg
+2026-11-27 13:40:26,941 WARNING VIOLATION Missing safety vest (class=NO-Safety Vest conf=0.82) source=hardhat.mp4 snapshot=2026-11-27T13-40-26.928_NO-Safety_Vest.jpg
+hardware: {"device": "12th Gen Intel(R) Core(TM) i5-12500H", "cpu": "12th Gen Intel(R) Core(TM) i5-12500H", "torch": "2.6.0+cu124", "python": "3.11.9"}
+video: {"file": "hardhat.mp4", "width": 640, "height": 360, "fps": 29.97, "frames_in_file": 1826}
+{
+  "hardware": {
+    "device": "12th Gen Intel(R) Core(TM) i5-12500H",
+    "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+    "torch": "2.6.0+cu124",
+    "python": "3.11.9"
+  },
+  "video": {
+    "file": "hardhat.mp4",
+    "width": 640,
+    "height": 360,
+    "fps": 29.97,
+    "frames_in_file": 1826
+  },
+  "weights": "C_v8s_default_aug.pt",
+  "conf": 0.5,
+  "warmup_frames": 20,
+  "measured_frames": 500,
+  "wall_time_s": 44.84,
+  "throughput_fps": 11.15,
+  "latency_ms": {
+    "read": {
+      "mean": 0.34,
+      "median": 0.33,
+      "p95": 0.44,
+      "max": 0.51
+    },
+    "model_total": {
+      "mean": 88.08,
+      "median": 87.57,
+      "p95": 93.32,
+      "max": 121.98
+    },
+    "yolo_pre": {
+      "mean": 0.86,
+      "median": 0.84,
+      "p95": 1.05,
+      "max": 1.25
+    },
+    "yolo_infer": {
+      "mean": 85.94,
+      "median": 85.36,
+      "p95": 90.93,
+      "max": 120.26
+    },
+    "yolo_post": {
+      "mean": 0.86,
+      "median": 0.89,
+      "p95": 1.05,
+      "max": 6.79
+    },
+    "rules": {
+      "mean": 0.01,
+      "median": 0.01,
+      "p95": 0.02,
+      "max": 0.03
+    },
+    "draw": {
+      "mean": 0.37,
+      "median": 0.35,
+      "p95": 0.52,
+      "max": 14.49
+    },
+    "alerts": {
+      "mean": 0.86,
+      "median": 0.01,
+      "p95": 8.81,
+      "max": 14.08
+    },
+    "end_to_end": {
+      "mean": 89.68,
+      "median": 88.57,
+      "p95": 98.13,
+      "max": 122.54
+    }
+  },
+  "frames_with_violation": 258,
+  "alerts_logged_after_cooldown": 6
+}
+
+# finished: 2026-11-27T13:40:32.186335  elapsed_s: 56.6  exit_code: 0
