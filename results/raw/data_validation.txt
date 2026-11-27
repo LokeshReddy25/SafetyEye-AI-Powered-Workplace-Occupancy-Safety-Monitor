@@ -1,0 +1,44 @@
+# command: C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\.venv\Scripts\python.exe -m src.data_prep.validate
+# cwd: SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor
+# git: ec4bbfd
+# started: 2026-11-27T09:49:07.647624
+
+Dataset root (read in place): C:\Users\acer\Desktop\DataSet\css-data
+
+[train] images=2605 labels=2605 kept=2603 empty_labels(background)=6
+  images_without_label=0 labels_without_image=0 corrupt_images=0 bad_label_files=2
+  image sizes: {'640x640': 2605}
+  BAD 004720_jpg.rf.afc486560a4004c7cfd67910af31a29c.txt: ['line 25: duplicate box']
+  BAD construction-813-_jpg.rf.b085952261fd98f2e76b8065de149b5f.txt: ['line 4: duplicate box']
+
+[val] images=114 labels=114 kept=114 empty_labels(background)=10
+  images_without_label=0 labels_without_image=0 corrupt_images=0 bad_label_files=0
+  image sizes: {'640x640': 114}
+
+[test] images=82 labels=82 kept=82 empty_labels(background)=8
+  images_without_label=0 labels_without_image=0 corrupt_images=0 bad_label_files=0
+  image sizes: {'640x640': 82}
+
+Leakage checks:
+  train vs val: identical image bytes=0, shared Roboflow source stems=6 ['IMG_3103_mp4-17_jpg', 'Movie-on-10-31-22-at-10_08-AM_mov-13_jpg', 'youtube-260_jpg', 'youtube-391_jpg', 'youtube-504_jpg']
+  train vs test: identical image bytes=0, shared Roboflow source stems=2 ['IMG_0871_mp4-23_jpg', 'image_55_jpg']
+  val vs test: identical image bytes=0, shared Roboflow source stems=0 []
+  unique source stems: train=514 val=113 test=81
+
+Wrote C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\configs\data.yaml
+
+Class distribution (instances / images containing class):
+class_id,class_name,train_instances,train_images,val_instances,val_images,test_instances,test_images
+0,Hardhat,3142,1313,79,42,110,30
+1,Mask,1651,1096,21,19,28,16
+2,NO-Hardhat,2316,1379,69,37,41,25
+3,NO-Mask,3094,1529,74,44,79,30
+4,NO-Safety Vest,3958,1862,106,56,90,36
+5,Person,9528,2524,166,84,174,59
+6,Safety Cone,3362,630,44,13,92,8
+7,Safety Vest,3033,1319,41,28,61,22
+8,machinery,5240,2099,55,26,44,22
+9,vehicle,1538,743,42,16,41,15
+Wrote 6 labelled sample images to C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\results\data_report\samples
+
+# finished: 2026-11-27T09:50:45.014563  elapsed_s: 97.4  exit_code: 0

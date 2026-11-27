@@ -1,0 +1,15 @@
+# command: C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\.venv\Scripts\python.exe C:\Users\acer\AppData\Local\Temp/leakcheck.py
+# cwd: SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor
+# git: ec4bbfd
+# started: 2026-11-27T09:51:00.998706
+
+train vs valid: IMG_3103_mp4-17_jpg                           min mean-abs-pixel-diff(64x64 gray) =  71.0  over 5 train copies  file=IMG_3103_mp4-17_jpg.rf.3223d405c1b3657aa54e170e32c8fe52.jpg
+train vs valid: Movie-on-10-31-22-at-10_08-AM_mov-13_jpg      min mean-abs-pixel-diff(64x64 gray) =  90.4  over 5 train copies  file=Movie-on-10-31-22-at-10_08-AM_mov-13_jpg.rf.91dc3b79da617fb2e4321f27f48f21f4.jpg
+train vs valid: youtube-260_jpg                               min mean-abs-pixel-diff(64x64 gray) =  77.4  over 5 train copies  file=youtube-260_jpg.rf.76ba0c9fa66318daee5bea72b83b4cc5.jpg
+train vs valid: youtube-391_jpg                               min mean-abs-pixel-diff(64x64 gray) =  71.4  over 5 train copies  file=youtube-391_jpg.rf.2744ad86e8dbd4366f1fa839accc48b3.jpg
+train vs valid: youtube-504_jpg                               min mean-abs-pixel-diff(64x64 gray) =  71.5  over 5 train copies  file=youtube-504_jpg.rf.23771986686856ac7d350cea84ddf611.jpg
+train vs valid: youtube-51_jpg                                min mean-abs-pixel-diff(64x64 gray) =  38.7  over 5 train copies  file=youtube-51_jpg.rf.083f4487f9a468d9ff42aa13953f377a.jpg
+train vs test: IMG_0871_mp4-23_jpg                           min mean-abs-pixel-diff(64x64 gray) =  73.9  over 5 train copies  file=IMG_0871_mp4-23_jpg.rf.03f872b1ed87ad7fadc85e09475ad37a.jpg
+train vs test: image_55_jpg                                  min mean-abs-pixel-diff(64x64 gray) =  82.2  over 5 train copies  file=image_55_jpg.rf.27ae4341a9b9647d73a8929ff7a22369.jpg
+
+# finished: 2026-11-27T09:51:01.362751  elapsed_s: 0.4  exit_code: 0

@@ -1,0 +1,11 @@
+class_id,class_name,train_instances,train_images,val_instances,val_images,test_instances,test_images
+0,Hardhat,3142,1313,79,42,110,30
+1,Mask,1651,1096,21,19,28,16
+2,NO-Hardhat,2316,1379,69,37,41,25
+3,NO-Mask,3094,1529,74,44,79,30
+4,NO-Safety Vest,3958,1862,106,56,90,36
+5,Person,9528,2524,166,84,174,59
+6,Safety Cone,3362,630,44,13,92,8
+7,Safety Vest,3033,1319,41,28,61,22
+8,machinery,5240,2099,55,26,44,22
+9,vehicle,1538,743,42,16,41,15

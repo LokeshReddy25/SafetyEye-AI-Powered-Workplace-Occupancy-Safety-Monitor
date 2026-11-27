@@ -1,0 +1,139 @@
+{
+  "train": {
+    "n_images": 2605,
+    "n_labels": 2605,
+    "images_without_label": 0,
+    "labels_without_image": 0,
+    "corrupt_images": 0,
+    "bad_labels": 2,
+    "empty_labels": 6,
+    "instances": {
+      "Hardhat": 3142,
+      "NO-Mask": 3094,
+      "Person": 9528,
+      "Mask": 1651,
+      "NO-Hardhat": 2316,
+      "NO-Safety Vest": 3958,
+      "Safety Vest": 3033,
+      "machinery": 5240,
+      "Safety Cone": 3362,
+      "vehicle": 1538
+    },
+    "images_per_class": {
+      "Hardhat": 1313,
+      "Mask": 1096,
+      "NO-Hardhat": 1379,
+      "NO-Mask": 1529,
+      "Person": 2524,
+      "NO-Safety Vest": 1862,
+      "Safety Vest": 1319,
+      "machinery": 2099,
+      "Safety Cone": 630,
+      "vehicle": 743
+    },
+    "image_sizes": {
+      "640x640": 2605
+    },
+    "kept": 2603
+  },
+  "val": {
+    "n_images": 114,
+    "n_labels": 114,
+    "images_without_label": 0,
+    "labels_without_image": 0,
+    "corrupt_images": 0,
+    "bad_labels": 0,
+    "empty_labels": 10,
+    "instances": {
+      "Hardhat": 79,
+      "Person": 166,
+      "NO-Safety Vest": 106,
+      "NO-Mask": 74,
+      "Safety Vest": 41,
+      "NO-Hardhat": 69,
+      "Mask": 21,
+      "Safety Cone": 44,
+      "machinery": 55,
+      "vehicle": 42
+    },
+    "images_per_class": {
+      "Hardhat": 42,
+      "NO-Mask": 44,
+      "NO-Safety Vest": 56,
+      "Person": 84,
+      "Safety Vest": 28,
+      "NO-Hardhat": 37,
+      "Mask": 19,
+      "Safety Cone": 13,
+      "machinery": 26,
+      "vehicle": 16
+    },
+    "image_sizes": {
+      "640x640": 114
+    },
+    "kept": 114
+  },
+  "test": {
+    "n_images": 82,
+    "n_labels": 82,
+    "images_without_label": 0,
+    "labels_without_image": 0,
+    "corrupt_images": 0,
+    "bad_labels": 0,
+    "empty_labels": 8,
+    "instances": {
+      "Hardhat": 110,
+      "NO-Mask": 79,
+      "NO-Safety Vest": 90,
+      "Person": 174,
+      "Safety Cone": 92,
+      "vehicle": 41,
+      "NO-Hardhat": 41,
+      "Safety Vest": 61,
+      "machinery": 44,
+      "Mask": 28
+    },
+    "images_per_class": {
+      "Hardhat": 30,
+      "NO-Mask": 30,
+      "NO-Safety Vest": 36,
+      "Person": 59,
+      "Safety Cone": 8,
+      "vehicle": 15,
+      "NO-Hardhat": 25,
+      "Safety Vest": 22,
+      "machinery": 22,
+      "Mask": 16
+    },
+    "image_sizes": {
+      "640x640": 82
+    },
+    "kept": 82
+  },
+  "leakage": {
+    "train-val": {
+      "identical_images": 0,
+      "shared_source_stems": 6,
+      "examples": [
+        "IMG_3103_mp4-17_jpg",
+        "Movie-on-10-31-22-at-10_08-AM_mov-13_jpg",
+        "youtube-260_jpg",
+        "youtube-391_jpg",
+        "youtube-504_jpg"
+      ]
+    },
+    "train-test": {
+      "identical_images": 0,
+      "shared_source_stems": 2,
+      "examples": [
+        "IMG_0871_mp4-23_jpg",
+        "image_55_jpg"
+      ]
+    },
+    "val-test": {
+      "identical_images": 0,
+      "shared_source_stems": 0,
+      "examples": []
+    }
+  }
+}
