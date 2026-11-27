@@ -1,165 +1,143 @@
-import streamlit as st
-import pandas as pd
-import plotly.graph_objects as go
-import cv2
+"""SafetyEye – Streamlit dashboard (Module 4).
+
+Run:  streamlit run app.py
+Tabs: Live feed (video file or webcam with overlays) | Compliance (charts) | Violation log (filter, export, snapshots)
+"""
+from __future__ import annotations
+
+import datetime as dt
 import time
-import psutil
-from safetyeye.detector import detector
-from safetyeye.alerts import alert_system
-from safetyeye.database import db
-from safetyeye.logger import get_logger
-from config import CAMERA_INDEX
+from pathlib import Path
 
-logger = get_logger()
+import pandas as pd
+import plotly.express as px
+import streamlit as st
 
-# Page config
-st.set_page_config(page_title="SafetyEye", layout="wide", initial_sidebar_state="expanded")
+from src import config
+from src.alerts import AlertManager, ViolationLog
+from src.rules import RULES
 
-# CSS
-st.markdown("""
-<style>
-h1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
-.metric-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white; }
-</style>
-""", unsafe_allow_html=True)
+st.set_page_config(page_title="SafetyEye", page_icon="🦺", layout="wide")
+db = ViolationLog()
 
-# Session state
-if "detecting" not in st.session_state:
-    st.session_state.detecting = False
 
-# Header
-st.markdown("<h1>🦺 SafetyEye - Workplace Safety Monitor</h1>", unsafe_allow_html=True)
+@st.cache_resource(show_spinner="Loading model…")
+def get_pipeline(weights: str, conf: float, rules: tuple):
+    from src.detect import Pipeline
 
-# Sidebar
-with st.sidebar:
-    st.title("⚙️ Settings")
-    auto_refresh = st.checkbox("Auto Refresh", True)
-    cpu = psutil.cpu_percent()
-    memory = psutil.virtual_memory().percent
-    st.metric("CPU", f"{cpu}%")
-    st.metric("Memory", f"{memory}%")
+    return Pipeline(weights, conf=conf, rules=rules)
 
-# Tabs
-tab1, tab2, tab3, tab4 = st.tabs(["📊 Dashboard", "📷 Live Feed", "📋 Logs", "⚠️ Alerts"])
 
-# TAB 1: Dashboard
-with tab1:
-    st.subheader("📈 Real-Time Metrics")
+# ---------------- sidebar ----------------
+st.sidebar.title("🦺 SafetyEye")
+weights = sorted(str(p) for p in config.WEIGHTS.glob("*.pt"))
+if not weights:
+    st.sidebar.error("No weights in weights/. Train a model first (python -m src.train …).")
+qp = st.query_params
+default_w = next((i for i, w in enumerate(weights) if Path(w).stem == qp.get("weights", "best")), 0)
+weights_sel = st.sidebar.selectbox("Model weights", weights, index=default_w if weights else None)
+videos = sorted(str(p) for p in config.SOURCE_VIDEOS.glob("*.mp4")) if config.SOURCE_VIDEOS.exists() else []
+src_kind = st.sidebar.radio("Input", ["Video file", "Webcam"], horizontal=True)
+if src_kind == "Video file":
+    default_v = next((i for i, v in enumerate(videos) if Path(v).name == qp.get("video", "hardhat.mp4")), 0)
+    source = st.sidebar.selectbox("Video", videos, index=default_v, format_func=lambda p: Path(p).name) \
+        if videos else st.sidebar.text_input("Video path")
+else:
+    source = str(st.sidebar.number_input("Webcam index", 0, 10, 0))
+conf = st.sidebar.slider("Confidence threshold", 0.1, 0.9, 0.5, 0.05)
+rules = st.sidebar.multiselect("Active rules", list(RULES), default=["NO-Hardhat", "NO-Safety Vest"],
+                               format_func=lambda c: f"{RULES[c]} ({c})")
+cooldown = st.sidebar.number_input("Alert cooldown (s)", 1, 600, 10)
+max_frames = st.sidebar.number_input("Stop after N frames (0 = until end)", 0, 100000,
+                                     int(qp.get("frames", 0)))
 
-    summary = db.get_summary()
-    total = summary["total"]
-    helmet = summary["helmet"]
-    vest = summary["vest"]
+tab_live, tab_stats, tab_log = st.tabs(["📷 Live feed", "📊 Compliance", "📋 Violation log"])
 
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("🚨 Total", total)
-    col2.metric("🪖 Helmet", helmet)
-    col3.metric("🦺 Vest", vest)
-    col4.metric("✅ Compliance", f"{100 - (helmet + vest) // max(total, 1) * 100 if total > 0 else 100}%")
+# ---------------- live ----------------
+with tab_live:
+    c1, c2 = st.columns([1, 1])
+    start = c1.button("▶ Start", type="primary", disabled=not (weights_sel and rules and source)) \
+        or qp.get("autostart") == "1"
+    c2.button("⏹ Stop")
+    frame_ph = st.empty()
+    m1, m2, m3, m4 = st.columns(4)
+    fps_ph, workers_ph, comp_ph, alerts_ph = m1.empty(), m2.empty(), m3.empty(), m4.empty()
+    warn_ph = st.empty()
+    if start:
+        import cv2
 
-    st.divider()
+        from src.detect import open_source
 
-    # Charts
-    violations = db.get_violations()
-    if violations:
-        df = pd.DataFrame(violations)
-        df["Timestamp"] = pd.to_datetime(df["Timestamp"])
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-            counts = df["Violation Type"].value_counts()
-            fig = go.Figure(data=[go.Pie(labels=counts.index, values=counts.values)])
-            fig.update_layout(title="Distribution", height=350)
-            st.plotly_chart(fig, use_container_width=True)
-
-        with col2:
-            trend = df.groupby(df["Timestamp"].dt.date).size()
-            fig = go.Figure(data=[go.Bar(x=trend.index, y=trend.values)])
-            fig.update_layout(title="Trend", height=350)
-            st.plotly_chart(fig, use_container_width=True)
-
-# TAB 2: Live Feed
-with tab2:
-    st.subheader("📷 Live Camera Feed")
-
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        if st.button("▶️ Start Detection", use_container_width=True):
-            st.session_state.detecting = True
-        if st.button("⏹️ Stop Detection", use_container_width=True):
-            st.session_state.detecting = False
-
-    frame_window = st.empty()
-
-    if st.session_state.detecting:
-        try:
-            cap = cv2.VideoCapture(CAMERA_INDEX)
-            while st.session_state.detecting:
-                ret, frame = cap.read()
-                if not ret:
-                    break
-
-                detections = detector.detect(frame)
-                violations = detector.get_violations(detections) if detections else []
-
-                annotated = detector.draw_boxes(frame, violations)
-                frame_window.image(annotated, channels="BGR")
-
-                for v in violations:
-                    if db.log_violation(v["type"], v["box"]):
-                        alert_system.send_email(
-                            f"SafetyEye: {v['type']}",
-                            f"Violation detected: {v['type']}"
-                        )
-
-                time.sleep(0.03)
-            cap.release()
-        except Exception as e:
-            st.error(f"Camera error: {e}")
-            logger.error(f"Camera error: {e}")
-
-# TAB 3: Logs
-with tab3:
-    st.subheader("📋 Violation Logs")
-
-    violations = db.get_violations()
-    if violations:
-        df = pd.DataFrame(violations)
-        st.dataframe(df, use_container_width=True)
-
-        col1, col2 = st.columns(2)
-        with col1:
-            st.download_button("📥 Download CSV", df.to_csv(index=False), "violations.csv")
-        with col2:
-            if st.button("🗑️ Clear Logs"):
-                open(db.VIOLATIONS_LOG, 'w').close()
-                with open(db.VIOLATIONS_LOG, 'w', newline='') as f:
-                    import csv
-                    csv.writer(f).writerow(['Timestamp', 'Violation Type', 'X1', 'Y1', 'X2', 'Y2'])
-                st.success("Logs cleared")
-    else:
-        st.info("No violations logged yet")
-
-# TAB 4: Alerts
-with tab4:
-    st.subheader("⚠️ Alert Management")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("🧪 Send Test Email"):
-            if alert_system.send_email("SafetyEye Test", "Testing email alerts"):
-                st.success("✅ Email sent!")
+        pipe = get_pipeline(weights_sel, conf, tuple(rules))
+        name = Path(source).name if src_kind == "Video file" else f"webcam{source}"
+        mgr = AlertManager(name, db=db, cooldown_s=cooldown)
+        cap = open_source(source)
+        fps, t_prev, n = None, time.perf_counter(), 0
+        while cap.isOpened():
+            ok, frame = cap.read()
+            if not ok or (max_frames and n >= max_frames):
+                break
+            out = pipe.process(frame, fps)
+            mgr.handle(frame, out.result)
+            now = time.perf_counter()
+            fps = 1 / max(now - t_prev, 1e-6) if fps is None else 0.9 * fps + 0.1 / max(now - t_prev, 1e-6)
+            t_prev = now
+            n += 1
+            frame_ph.image(cv2.cvtColor(out.annotated, cv2.COLOR_BGR2RGB), channels="RGB", use_container_width=True)
+            r = out.result
+            fps_ph.metric("Dashboard FPS", f"{fps:.1f}")
+            workers_ph.metric("Workers in frame", r.n_workers)
+            comp_ph.metric("Compliance (frame)", "n/a" if r.compliance is None else f"{r.compliance:.0%}")
+            alerts_ph.metric("Alerts this session", mgr.n_alerts)
+            if r.violations:
+                warn_ph.error("⚠️ VIOLATION: " + ", ".join(sorted({v.rule for v in r.violations})))
             else:
-                st.error("❌ Failed to send")
+                warn_ph.success("No active violations")
+        cap.release()
+        st.info(f"Stopped after {n} frames. {mgr.n_alerts} alerts logged.")
+    else:
+        frame_ph.info("Pick a video or webcam in the sidebar and press Start.")
 
-    with col2:
-        if st.button("🎬 Simulate Violation"):
-            db.log_violation("Helmet Missing")
-            alert_system.send_email("SafetyEye Alert", "Simulated violation")
-            st.warning("⚠️ Violation simulated")
+# ---------------- compliance ----------------
+with tab_stats:
+    stats = db.query(table="frame_stats")
+    viol = db.query()
+    if stats.empty:
+        st.info("No data yet – run the live feed first.")
+    else:
+        stats["ts"] = pd.to_datetime(stats["ts"])
+        s = stats[stats.n_workers > 0]
+        overall = s.n_compliant.sum() / max(s.n_workers.sum(), 1)
+        k1, k2, k3 = st.columns(3)
+        k1.metric("Overall compliance (worker-samples)", f"{overall:.1%}")
+        k2.metric("Violations logged (after cooldown)", len(viol))
+        k3.metric("Sampled frames", len(stats))
+        per_min = s.set_index("ts").resample("1min").sum(numeric_only=True)
+        per_min = per_min[per_min.n_workers > 0]
+        per_min["compliance_%"] = per_min.n_compliant / per_min.n_workers * 100
+        st.plotly_chart(px.line(per_min.reset_index(), x="ts", y="compliance_%", markers=True,
+                                title="Compliance % per minute", range_y=[0, 100]), use_container_width=True)
+        if not viol.empty:
+            viol["ts"] = pd.to_datetime(viol["ts"])
+            vm = viol.groupby([pd.Grouper(key="ts", freq="1min"), "rule"]).size().reset_index(name="count")
+            st.plotly_chart(px.bar(vm, x="ts", y="count", color="rule", title="Violations over time (per minute)"),
+                            use_container_width=True)
+            st.plotly_chart(px.pie(viol, names="rule", title="Violations by rule"), use_container_width=True)
 
-# Auto refresh
-if auto_refresh:
-    time.sleep(5)
-    st.rerun()
+# ---------------- log ----------------
+with tab_log:
+    today = dt.date.today()
+    f1, f2, f3 = st.columns(3)
+    d_from = f1.date_input("From", today - dt.timedelta(days=7))
+    d_to = f2.date_input("To", today)
+    rule_f = f3.selectbox("Rule", ["All"] + list(RULES.values()))
+    df = db.query(start=d_from.isoformat(), end=(d_to + dt.timedelta(days=1)).isoformat(),
+                  rule=None if rule_f == "All" else rule_f)
+    st.caption(f"{len(df)} violations · stored in {config.VIOLATIONS_DB.relative_to(config.ROOT)}")
+    st.dataframe(df.sort_values("ts", ascending=False), use_container_width=True, hide_index=True)
+    st.download_button("⬇ Export CSV", df.to_csv(index=False), "violations.csv", "text/csv", disabled=df.empty)
+    if not df.empty:
+        vid = st.selectbox("Show snapshot for violation id", df.id.sort_values(ascending=False))
+        snap = df.loc[df.id == vid, "snapshot"].iloc[0]
+        if snap and Path(snap).exists():
+            st.image(snap, caption=Path(snap).name)
