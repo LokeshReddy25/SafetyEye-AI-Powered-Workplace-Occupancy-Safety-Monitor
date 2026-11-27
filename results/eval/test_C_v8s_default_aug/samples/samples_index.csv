@@ -1,0 +1,11 @@
+kind,file,false_positives,false_negatives,gt_boxes
+failure,ka_01181_png_jpg.rf.154ee4ef254eabd62e316be50470c578.jpg,0,49,58
+failure,youtube-152_jpg.rf.9147878e3ddda845e58f7d9c041f1338.jpg,0,27,35
+failure,Image36_jpg.rf.8704f3450f736cdd01a61dcee588f2c2.jpg,1,18,51
+failure,autox3_mp4-277_jpg.rf.a5ed8fd043fe7e1d8682768880b6d4db.jpg,4,12,25
+failure,ppe_1073_jpg.rf.72ea8a293a4f3e1135219e33701b1099.jpg,1,12,39
+failure,NX_img_177_jpg.rf.c03709e5fadfe2109411f05a9e9bc25f.jpg,1,11,19
+success,004763_jpg.rf.46484e6ca73caeaa9de45822cf1085a9.jpg,0,0,12
+success,2009_000059_jpg.rf.50e8398a37eb33f33fd9f662feeea083.jpg,0,0,4
+success,IMG_0871_MOV-12_jpg.rf.36858a9d51613f9a39b7855b54dfa098.jpg,0,0,4
+success,IMG_0871_mp4-11_jpg.rf.432092b53ebeb84f4b9b27b40343c9aa.jpg,0,0,4

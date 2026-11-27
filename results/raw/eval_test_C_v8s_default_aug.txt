@@ -1,0 +1,55 @@
+# command: C:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\.venv\Scripts\python.exe -m src.evaluate --weights weights/C_v8s_default_aug.pt --split test --name test_C_v8s_default_aug --device 0 --samples
+# cwd: SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor
+# git: 8949d69
+# started: 2026-11-27T13:38:08.918181
+
+Ultralytics 8.4.220  Python-3.11.9 torch-2.6.0+cu124 CUDA:0 (NVIDIA GeForce RTX 3050 Ti Laptop GPU, 4096MiB)
+Model summary (fused): 72 layers, 11,129,454 parameters, 0 gradients, 28.5 GFLOPs
+[34m[1mval: [0mFast image access  (ping: 0.3±0.2 ms, read: 128.1±58.5 MB/s, size: 56.6 KB)
+
+[K[34m[1mval: [0mScanning C:\Users\acer\Desktop\DataSet\css-data\test\labels... 82 images, 8 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 82/82 2.3Kit/s 0.0s
+[34m[1mval: [0mNew cache created: C:\Users\acer\Desktop\DataSet\css-data\test\labels.cache
+
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━━────────── 1/6 44.8s/it 13.4s<3:44
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 33% ━━━━──────── 2/6 1.3it/s 13.7s<3.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 50% ━━━━━━────── 3/6 2.3it/s 13.9s<1.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 66% ━━━━━━━━──── 4/6 3.0it/s 14.1s<0.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 83% ━━━━━━━━━━── 5/6 2.7it/s 14.6s<0.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 6/6 2.4s/it 14.7s
+                   all         82        760      0.911      0.728       0.79      0.498
+               Hardhat         30        110      0.979       0.85      0.931      0.609
+                  Mask         16         28      0.955      0.759      0.781       0.55
+            NO-Hardhat         25         41      0.864      0.618      0.591      0.314
+               NO-Mask         30         79      0.882      0.722      0.801      0.404
+        NO-Safety Vest         36         90      0.943      0.741      0.809      0.503
+                Person         59        174      0.937      0.799      0.879      0.569
+           Safety Cone          8         92      0.814      0.457      0.486      0.234
+           Safety Vest         22         61      0.899      0.885      0.903      0.606
+             machinery         22         44      0.938      0.818      0.877      0.676
+               vehicle         15         41      0.903      0.634      0.844      0.516
+Speed: 1.8ms preprocess, 17.9ms inference, 0.0ms loss, 0.8ms postprocess per image
+Results saved to [1mC:\Users\acer\Desktop\SafetyEye-AI-Powered-Workplace-Occupancy-Safety-Monitor\runs\eval\test_C_v8s_default_aug[0m
+| Class | Instances | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 |
+|---|---:|---:|---:|---:|---:|
+| **all** | 760 | 0.911 | 0.728 | 0.790 | 0.498 |
+| Hardhat | 110 | 0.979 | 0.850 | 0.931 | 0.609 |
+| Mask | 28 | 0.955 | 0.759 | 0.781 | 0.550 |
+| NO-Hardhat | 41 | 0.864 | 0.618 | 0.591 | 0.314 |
+| NO-Mask | 79 | 0.882 | 0.722 | 0.801 | 0.404 |
+| NO-Safety Vest | 90 | 0.943 | 0.741 | 0.809 | 0.503 |
+| Person | 174 | 0.937 | 0.799 | 0.879 | 0.569 |
+| Safety Cone | 92 | 0.814 | 0.457 | 0.486 | 0.234 |
+| Safety Vest | 61 | 0.899 | 0.885 | 0.903 | 0.606 |
+| machinery | 44 | 0.938 | 0.818 | 0.877 | 0.676 |
+| vehicle | 41 | 0.903 | 0.634 | 0.844 | 0.516 |
+{
+  "conf": 0.5,
+  "iou_match": 0.5,
+  "images": 82,
+  "gt_boxes": 760,
+  "false_positives": 25,
+  "false_negatives": 216,
+  "images_with_zero_errors": 43
+}
+
+# finished: 2026-11-27T13:38:34.194994  elapsed_s: 25.3  exit_code: 0

@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "weights": "weights/C_v8s_default_aug.pt",
+    "split": "test",
+    "device": "0",
+    "imgsz": 640,
+    "val_conf": 0.001,
+    "val_iou": 0.7,
+    "speed_ms_per_image": {
+      "preprocess": 1.76066707283054,
+      "inference": 17.899371950855908,
+      "loss": 0.0004731707854150999,
+      "postprocess": 0.7746451223416754
+    }
+  },
+  "overall": {
+    "precision": 0.9114663350334411,
+    "recall": 0.7282667093846816,
+    "mAP50": 0.7901261687684707,
+    "mAP50_95": 0.49804349825838734
+  },
+  "per_class": [
+    {
+      "class": "Hardhat",
+      "instances": 110,
+      "precision": 0.9790687076805403,
+      "recall": 0.8504846093023994,
+      "mAP50": 0.930981626292881,
+      "mAP50_95": 0.6092659750240478
+    },
+    {
+      "class": "Mask",
+      "instances": 28,
+      "precision": 0.9550303678627003,
+      "recall": 0.7587630763759404,
+      "mAP50": 0.7808867843306071,
+      "mAP50_95": 0.5496106707857488
+    },
+    {
+      "class": "NO-Hardhat",
+      "instances": 41,
+      "precision": 0.8636708514013804,
+      "recall": 0.6182539068243966,
+      "mAP50": 0.5908123070371554,
+      "mAP50_95": 0.3142635485886276
+    },
+    {
+      "class": "NO-Mask",
+      "instances": 79,
+      "precision": 0.881942116006585,
+      "recall": 0.7215189873417721,
+      "mAP50": 0.800895788267727,
+      "mAP50_95": 0.40431553612047766
+    },
+    {
+      "class": "NO-Safety Vest",
+      "instances": 90,
+      "precision": 0.9433907545261317,
+      "recall": 0.7407001388746528,
+      "mAP50": 0.8092486607771873,
+      "mAP50_95": 0.5026360412178926
+    },
+    {
+      "class": "Person",
+      "instances": 174,
+      "precision": 0.9373827914387299,
+      "recall": 0.7988505747126436,
+      "mAP50": 0.8789218906443068,
+      "mAP50_95": 0.5693821445768465
+    },
+    {
+      "class": "Safety Cone",
+      "instances": 92,
+      "precision": 0.8144140555008509,
+      "recall": 0.45652173913043476,
+      "mAP50": 0.4861301785014158,
+      "mAP50_95": 0.23352857411555877
+    },
+    {
+      "class": "Safety Vest",
+      "instances": 61,
+      "precision": 0.8988970332148711,
+      "recall": 0.8852459016393442,
+      "mAP50": 0.9030061468538597,
+      "mAP50_95": 0.6055470553238578
+    },
+    {
+      "class": "machinery",
+      "instances": 44,
+      "precision": 0.9378307314290769,
+      "recall": 0.8181818181818182,
+      "mAP50": 0.876741569486035,
+      "mAP50_95": 0.6758174300160802
+    },
+    {
+      "class": "vehicle",
+      "instances": 41,
+      "precision": 0.9030359412735429,
+      "recall": 0.6341463414634146,
+      "mAP50": 0.8436367354935316,
+      "mAP50_95": 0.5160680068147353
+    }
+  ],
+  "sample_error_counts": {
+    "conf": 0.5,
+    "iou_match": 0.5,
+    "images": 82,
+    "gt_boxes": 760,
+    "false_positives": 25,
+    "false_negatives": 216,
+    "images_with_zero_errors": 43
+  }
+}
