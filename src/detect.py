@@ -4,7 +4,7 @@ Usage:
     python -m src.detect --weights weights/best.pt --source 0                  # webcam 0
     python -m src.detect --weights weights/best.pt --source path/to/video.mp4  # file
 Options: --conf 0.5  --rules NO-Hardhat "NO-Safety Vest" [NO-Mask]  --no-show  --save out.mp4
-         --max-frames N  --cooldown 10
+         --max-frames N  --cooldown 10  --device cpu
 Press q to quit the window. Email alerts are sent only if EMAIL_ENABLED=1 in .env.
 """
 from __future__ import annotations
@@ -97,11 +97,12 @@ def main() -> None:
     ap.add_argument("--no-show", action="store_true")
     ap.add_argument("--save")
     ap.add_argument("--max-frames", type=int)
+    ap.add_argument("--device", default=None, help="0 (GPU) or cpu; default: auto")
     args = ap.parse_args()
 
     from src.alerts import AlertManager
 
-    pipe = Pipeline(args.weights, args.conf, args.rules)
+    pipe = Pipeline(args.weights, args.conf, args.rules, device=args.device)
     alerts = AlertManager(source=Path(args.source).name if not args.source.isdigit() else f"webcam{args.source}",
                           cooldown_s=args.cooldown)
     cap = open_source(args.source)
