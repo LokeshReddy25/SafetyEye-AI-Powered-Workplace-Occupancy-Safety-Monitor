@@ -14,6 +14,7 @@ def main() -> int:
     if "--" not in sys.argv:
         print(__doc__)
         return 2
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     i = sys.argv.index("--")
     name, cmd = sys.argv[1], sys.argv[i + 1:]
     exe = ROOT / cmd[0]
