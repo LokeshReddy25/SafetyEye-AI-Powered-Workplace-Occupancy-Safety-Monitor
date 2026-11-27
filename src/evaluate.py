@@ -110,25 +110,32 @@ def main():
     ap.add_argument("--split", choices=["val", "test"], required=True)
     ap.add_argument("--name", required=True)
     ap.add_argument("--samples", action="store_true")
+    ap.add_argument("--device", default="0", help="0 (GPU) or cpu")
     args = ap.parse_args()
 
     model = YOLO(args.weights)
     names = model.names
-    m = model.val(data=str(config.DATA_YAML), split=args.split, imgsz=640, batch=16, device=0, plots=True,
+    m = model.val(data=str(config.DATA_YAML), split=args.split, imgsz=640, batch=16, device=args.device, plots=True,
+                  conf=0.001, iou=0.7,
                   project=str(config.RUNS / "eval"), name=args.name, exist_ok=True)
     out = config.RESULTS / "eval" / args.name
     out.mkdir(parents=True, exist_ok=True)
 
     overall = {"precision": float(m.box.mp), "recall": float(m.box.mr), "mAP50": float(m.box.map50),
                "mAP50_95": float(m.box.map)}
-    counts = getattr(m, "nt_per_class", None)
+    counts = [0] * len(names)
+    for img in (config.SPLITS_DIR / f"{args.split}.txt").read_text().split():
+        lbl = Path(img).parent.parent / "labels" / (Path(img).stem + ".txt")
+        for line in lbl.read_text().splitlines():
+            if line.strip():
+                counts[int(line.split()[0])] += 1
     per_class = []
     for k, ci in enumerate(m.box.ap_class_index):
         p, r, ap50, ap = m.box.class_result(k)
-        per_class.append({"class": names[int(ci)], "instances": int(counts[int(ci)]) if counts is not None else None,
+        per_class.append({"class": names[int(ci)], "instances": counts[int(ci)],
                           "precision": float(p), "recall": float(r), "mAP50": float(ap50), "mAP50_95": float(ap)})
 
-    meta = {"weights": args.weights, "split": args.split, "imgsz": 640, "val_conf": m.args.conf, "val_iou": m.args.iou,
+    meta = {"weights": args.weights, "split": args.split, "device": args.device, "imgsz": 640, "val_conf": 0.001, "val_iou": 0.7,
             "speed_ms_per_image": m.speed}
     res = {"meta": meta, "overall": overall, "per_class": per_class}
     if args.samples:
